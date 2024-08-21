@@ -1,0 +1,30 @@
+import {Project} from "./project.js";
+
+const projects = [];
+
+export const createProject = function() {
+    const newProjButton = document.querySelector(".create-project");
+    const form = document.querySelector(".proj-dialog");
+    const submitButton = document.querySelector(".submit");
+    const cancelButton = document.querySelector(".cancel");
+
+    newProjButton.addEventListener("click", () => {
+        form.showModal();
+    });
+
+    submitButton.addEventListener("click", () => {
+        const nameField = document.querySelector("#name");
+        const name = nameField.value;
+        const newProject = new Project(name);
+        projects.push(newProject);
+
+        nameField.value = "";
+        form.close();
+    });
+
+    cancelButton.addEventListener("click", () => {
+        const nameField = document.querySelector("#name");
+        nameField.value = "";
+        form.close();
+    });
+}

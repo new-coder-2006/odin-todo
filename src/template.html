@@ -8,7 +8,15 @@
 <body>
     <div class="current-project"></div>
     <div class="my-projects"></div>
-    <button class="create-project"></button>
-    <button class="add-item"></button>
+    <button class="create-project">Create New Project</button>
+    <dialog class="proj-dialog">
+        <form>
+            <label for="name">Name of Project</label>
+            <input type="text" id="name" name="name" required>
+        </form>
+        <button class="submit">Submit</button>
+        <button class="cancel">Cancel</button>
+    </dialog>
+    <button class="add-item">Add New Item to Project</button>
 </body>
 </html>

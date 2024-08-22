@@ -1,6 +1,11 @@
 import {Project} from "./project.js";
 
-const projects = [];
+export const projects = [];
+
+export const displayProjects = function() {
+    const container = document.querySelector(".my-projects");
+    
+}
 
 export const createProject = function() {
     const newProjButton = document.querySelector(".create-project");
@@ -15,11 +20,15 @@ export const createProject = function() {
     submitButton.addEventListener("click", () => {
         const nameField = document.querySelector("#name");
         const name = nameField.value;
-        const newProject = new Project(name);
-        projects.push(newProject);
 
-        nameField.value = "";
-        form.close();
+        if (name === "") {
+            alert("Please enter a name for your project!");
+        } else {
+            const newProject = new Project(name);
+            projects.push(newProject);
+            nameField.value = "";
+            form.close();
+        }
     });
 
     cancelButton.addEventListener("click", () => {

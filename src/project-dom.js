@@ -17,6 +17,10 @@ export const displayProjects = function() {
     for (let i = 0; i < projects.length; i++) {
         const proj = document.createElement("li");
         proj.textContent = projects[i].name;
+        const selectButton = document.createElement("button");
+        selectButton.setAttribute("class", projects[i].name);
+        selectButton.textContent = "Select";
+        proj.appendChild(selectButton);
         listContainer.appendChild(proj);
     }
 

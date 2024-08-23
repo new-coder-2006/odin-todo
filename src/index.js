@@ -1,4 +1,5 @@
 import "./styles.css";
-import {createProject} from "./project-dom.js";
+import { displayProjects, createProject } from "./project-dom.js";
 
 createProject();
+displayProjects();

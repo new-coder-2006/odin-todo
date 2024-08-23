@@ -1,10 +1,26 @@
 import {Project} from "./project.js";
 
-export const projects = [];
+export const defaultProject = new Project("Default");   
+export const projects = [defaultProject];
 
 export const displayProjects = function() {
+    console.log(projects);
     const container = document.querySelector(".my-projects");
+    const ul = document.querySelector("ul");
+
+    if (ul) {
+        container.removeChild(ul);
+    }
     
+    const listContainer = document.createElement("ul");
+
+    for (let i = 0; i < projects.length; i++) {
+        const proj = document.createElement("li");
+        proj.textContent = projects[i].name;
+        listContainer.appendChild(proj);
+    }
+
+    container.appendChild(listContainer);
 }
 
 export const createProject = function() {
@@ -28,6 +44,8 @@ export const createProject = function() {
             projects.push(newProject);
             nameField.value = "";
             form.close();
+            console.log(projects);
+            displayProjects();
         }
     });
 

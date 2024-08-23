@@ -1,4 +1,4 @@
 import "./styles.css";
-import {createProject} from "./dom.js";
+import {createProject} from "./project-dom.js";
 
 createProject();

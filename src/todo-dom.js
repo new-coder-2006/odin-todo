@@ -1,5 +1,5 @@
 import { Project } from "./project.js";
-import { defaultProject } from "./project-dom.js";
+import { defaultProject, projects } from "./project-dom.js";
 
 const createTextElement = function(elementType, content, parent) {
     const elt = document.createElement(elementType);
@@ -7,7 +7,7 @@ const createTextElement = function(elementType, content, parent) {
     parent.appendChild(elt);
 }
 
-export const selectedProject = defaultProject;
+export let selectedProject = defaultProject;
 
 export const displaySelectedProject = function() {
     const currentContainer = document.querySelector(".current-project");
@@ -33,5 +33,19 @@ export const displaySelectedProject = function() {
 }
 
 export const changeSelectedProject = function() {
-    
+    const selectButtons = document.querySelectorAll(".select");
+    console.log("here");
+
+    selectButtons.forEach(btn => {
+        btn.addEventListener("click", () => {
+            const projName = btn.id;
+
+            for (let i = 0; i < projects.length; i++) {
+                if (projects[i].name === projName) {
+                    selectedProject = projects[i];
+                    break;
+                }
+            }2
+        });
+    });
 }

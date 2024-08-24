@@ -86,6 +86,16 @@ export const displayProjects = function() {
     changeSelectedProject();
 }
 
+const checkDuplicates = function(listOfProjects, name) {
+    for (let i = 0; i < listOfProjects.length; i++) {
+        if (listOfProjects[i].name.toLowerCase() === name.toLowerCase()) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
 export const createProject = function() {
     const newProjButton = document.querySelector(".create-project");
     const form = document.querySelector(".proj-dialog");
@@ -102,6 +112,8 @@ export const createProject = function() {
 
         if (name === "") {
             alert("Please enter a name for your project!");
+        } else if (checkDuplicates(projects, name)) {
+            alert("Please enter a unique name for your project!");
         } else {
             const newProject = new Project(name);
             projects.push(newProject);

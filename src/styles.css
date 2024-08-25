@@ -1,4 +1,6 @@
 /* styles.css */
+@import url('https://fonts.googleapis.com/css2?family=Caveat&display=swap');
+
 body {
     font-family: 'Arial', sans-serif;
     background-color: #f4f4f9;
@@ -25,6 +27,7 @@ button:hover {
 }
 
 .current-project {
+    font-family: 'Caveat', cursive;
     background: #fff;
     border: 1px solid #ddd;
     width: 300px;

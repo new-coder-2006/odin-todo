@@ -1,51 +1,45 @@
 import { Project } from "./project.js";
-import { defaultProject, projects } from "./project-dom.js";
+import { defaultProject, projects, displayProjects, selectedProject, displaySelectedProject } from "./project-dom.js";
+import { Todo } from "./todo.js";
 
-const createTextElement = function(elementType, content, parent) {
-    const elt = document.createElement(elementType);
-    elt.textContent = content;
-    parent.appendChild(elt);
-}
+export const addTodoItem = function() {
+    const newItemButton = document.querySelector(".add-item");
+    const form = document.querySelector(".item-dialog");
+    const submitButton = document.querySelector(".submit-item");
+    const cancelButton = document.querySelector(".cancel-item");
 
-export let selectedProject = defaultProject;
+    newItemButton.addEventListener("click", () => {
+        form.showModal();
+    });
 
-export const displaySelectedProject = function() {
-    const currentContainer = document.querySelector(".current-project");
-    const projNameContainer = document.createElement("h1");
-    projNameContainer.textContent = selectedProject.name;
-    currentContainer.appendChild(projNameContainer);
+    submitButton.addEventListener("click", () => {
+        const titleField = document.querySelector("#title");
+        const title = titleField.value;
+        const descriptionField = document.querySelector("#description");
+        const description = descriptionField.value;
+        const dateField = document.querySelector("#date");
+        const dueDate = dateField.value;
+        const priorityField = document.querySelector("#high-priority");
+        const priority = priorityField.checked;
 
-    const itemList = document.createElement("ul");
+        if (title === "") {
+            alert("Please enter a title for this list item!");
+        } else {
+            const newItem = new Todo(title, description, dueDate, priority);
+            selectedProject.addItem(newItem);
+            titleField.value = "";
+            descriptionField.value = "";
+            dateField.value = "";
+            priorityField.checked = false;
+            form.close();
+            displayProjects();
+            displaySelectedProject();
+        }
+    });
 
-    for (let i = 0; i < defaultProject.items.length; i++) {
-        const item = defaultProject.items[i];
-        const itemContainer = document.createElement("li");
-
-        createTextElement("h2", item.title, itemContainer);
-        createTextElement("p", item.description, itemContainer);
-        createTextElement("h3", item.dueDate, itemContainer);
-        createTextElement("h3", item.priority, itemContainer);
-
-        itemList.appendChild(itemContainer);
-    }
-
-    currentContainer.appendChild(itemList);
-}
-
-export const changeSelectedProject = function() {
-    const selectButtons = document.querySelectorAll(".select");
-    console.log("here");
-
-    selectButtons.forEach(btn => {
-        btn.addEventListener("click", () => {
-            const projName = btn.id;
-
-            for (let i = 0; i < projects.length; i++) {
-                if (projects[i].name === projName) {
-                    selectedProject = projects[i];
-                    break;
-                }
-            }2
-        });
+    cancelButton.addEventListener("click", () => {
+        const nameField = document.querySelector("#name");
+        nameField.value = "";
+        form.close();
     });
 }

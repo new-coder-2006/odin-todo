@@ -4,10 +4,12 @@ export const defaultProject = new Project("Default");
 export const projects = [defaultProject];
 export let selectedProject = defaultProject;
 
-const createTextElement = function(elementType, content, parent) {
+const createListElement = function(elementType, content, parent) {
+    const li = document.createElement("li");
     const elt = document.createElement(elementType);
     elt.textContent = content;
-    parent.appendChild(elt);
+    li.appendChild(elt);
+    parent.appendChild(li);
 }
 
 export const displaySelectedProject = function() {
@@ -26,16 +28,13 @@ export const displaySelectedProject = function() {
 
     const itemList = document.createElement("ul");
 
-    for (let i = 0; i < defaultProject.items.length; i++) {
-        const item = defaultProject.items[i];
-        const itemContainer = document.createElement("li");
+    for (let i = 0; i < selectedProject.items.length; i++) {
+        const item = selectedProject.items[i];
 
-        createTextElement("h2", item.title, itemContainer);
-        createTextElement("p", item.description, itemContainer);
-        createTextElement("h3", item.dueDate, itemContainer);
-        createTextElement("h3", item.priority, itemContainer);
-
-        itemList.appendChild(itemContainer);
+        createListElement("h2", item.title, itemList);
+        createListElement("p", item.description, itemList);
+        createListElement("h3", item.dueDate, itemList);
+        createListElement("h3", item.priority, itemList);
     }
 
     projContainer.appendChild(itemList);
@@ -99,8 +98,8 @@ const checkDuplicates = function(listOfProjects, name) {
 export const createProject = function() {
     const newProjButton = document.querySelector(".create-project");
     const form = document.querySelector(".proj-dialog");
-    const submitButton = document.querySelector(".submit");
-    const cancelButton = document.querySelector(".cancel");
+    const submitButton = document.querySelector(".submit-proj");
+    const cancelButton = document.querySelector(".cancel-proj");
 
     newProjButton.addEventListener("click", () => {
         form.showModal();

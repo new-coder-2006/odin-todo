@@ -68,7 +68,6 @@ button:hover {
     align-items: center; /* Align checkbox vertically with text */
     padding: 8px 0;
     padding: 8px 0;
-    border-bottom: 1px dashed #ddd;
     position: relative;
 }
 

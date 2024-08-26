@@ -15,10 +15,16 @@ export const addTodoItem = function() {
     submitButton.addEventListener("click", () => {
         const titleField = document.querySelector("#title");
         const title = titleField.value;
+
         const descriptionField = document.querySelector("#description");
         const description = descriptionField.value;
+        
         const dateField = document.querySelector("#date");
-        const dueDate = dateField.value;
+        const dateValue = dateField.value;
+        const [year, month, day] = dateValue.split('-');
+        const formattedDate = `${month}-${day}-${year}`;
+        const dueDate = "Due Date: " + formattedDate;
+
         const priorityField = document.querySelector("#high-priority");
         const priority = priorityField.checked;
 

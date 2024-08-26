@@ -93,7 +93,9 @@ export const displayProjects = function() {
 
     for (let i = 0; i < projects.length; i++) {
         const proj = document.createElement("li");
-        proj.textContent = projects[i].name;
+        const textDiv = document.createElement("div");
+        textDiv.textContent = projects[i].name;
+        proj.appendChild(textDiv);
         const selectButton = document.createElement("button");
         selectButton.setAttribute("class", "select");
         selectButton.setAttribute("id", projects[i].name);

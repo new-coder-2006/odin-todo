@@ -64,7 +64,48 @@ button:hover {
 }
 
 .current-project ul li {
+    display: flex; /* Make items flexible to align checkbox and text */
+    align-items: center; /* Align checkbox vertically with text */
+    padding: 8px 0;
     padding: 8px 0;
     border-bottom: 1px dashed #ddd;
     position: relative;
+}
+
+.current-project ul li input[type="checkbox"] {
+    display: none;
+}
+
+.current-project ul li label {
+    position: relative;
+    padding-left: 30px; /* Space for custom checkbox */
+    cursor: pointer; /* Pointer cursor for better UX */
+    display: inline-block;
+    line-height: 1.2; /* Align label text */
+    font-size: 25px;
+}
+
+.current-project ul li label::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 20px;
+    height: 20px;
+    border: 2px solid #333; /* Border color of the checkbox */
+    background-color: #fff; /* Background color of the checkbox */
+    border-radius: 4px; /* Rounded corners */
+    box-sizing: border-box; /* Ensure border-box model */
+}
+
+/* Handwritten checkmark for custom checkbox */
+.current-project ul li input[type="checkbox"]:checked + label::after {
+    content: '✓'; /* Checkmark symbol */
+    position: absolute;
+    left: 3px; /* Adjust to center the checkmark */
+    top: -3px; /* Adjust to center the checkmark */
+    font-size: 22px; /* Size of the checkmark */
+    color: #333; /* Color of the checkmark */
+    font-family: 'Caveat', cursive; /* Use the handwritten font */
+    transform: rotate(-10deg); /* Slight rotation for a more handwritten look */
 }

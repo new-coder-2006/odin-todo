@@ -4,10 +4,32 @@ export const defaultProject = new Project("Default");
 export const projects = [defaultProject];
 export let selectedProject = defaultProject;
 
-const createListElement = function(elementType, content, parent) {
+let numItems = 0;
+
+const createListElement = function(elementType, item, content, parent, isTitle) {
     const li = document.createElement("li");
+    
+    if (isTitle) {
+        numItems++;
+        const checkbox = document.createElement("input");
+        checkbox.setAttribute("type", "checkbox");
+        checkbox.setAttribute("id", "todo" + String(numItems))
+        li.appendChild(checkbox);
+    }
+
     const elt = document.createElement(elementType);
-    elt.textContent = content;
+
+    if (isTitle) {
+        elt.setAttribute("for", "todo" + String(numItems));
+        if (item.priority) {
+            elt.textContent = content + "(!)";
+        } else {
+            elt.textContent = content;
+        }
+    } else {
+        elt.textContent = content;
+    }
+
     li.appendChild(elt);
     parent.appendChild(li);
 }
@@ -31,10 +53,9 @@ export const displaySelectedProject = function() {
     for (let i = 0; i < selectedProject.items.length; i++) {
         const item = selectedProject.items[i];
 
-        createListElement("h2", item.title, itemList);
-        createListElement("p", item.description, itemList);
-        createListElement("h3", item.dueDate, itemList);
-        createListElement("h3", item.priority, itemList);
+        createListElement("label", item, item.title, itemList, true);
+        createListElement("p", item, item.description, itemList, false);
+        createListElement("h3", item, item.dueDate, itemList, false);
     }
 
     projContainer.appendChild(itemList);

@@ -106,6 +106,10 @@ button:hover {
     transform: rotate(-10deg); /* Slight rotation for a more handwritten look */
 }
 
+.delete-item {
+    margin-bottom: 10px;
+}
+
 .my-projects {
     display: flex;
     flex-direction: column;

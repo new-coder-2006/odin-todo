@@ -22,10 +22,10 @@ export class Project {
 
     removeItem(item) {
         this._items = this._items.filter(
-            obj => obj.title() !== item.title() ||
-                   obj.description() !== item.description() ||
-                   obj.dueDate() !== item.dueDate() ||
-                   obj.priority() !== item.priority()
+            obj => obj.title !== item.title ||
+                   obj.description !== item.description ||
+                   obj.dueDate !== item.dueDate ||
+                   obj.priority !== item.priority
         );
     }
 }

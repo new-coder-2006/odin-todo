@@ -6,7 +6,9 @@ export let selectedProject = defaultProject;
 
 let numItems = 0;
 
-const createListElement = function(elementType, item, content, parent, isTitle) {
+const createListElement = function(elementType, item, content, parent, isTitle,
+    project
+) {
     const li = document.createElement("li");
     
     if (isTitle) {
@@ -27,6 +29,15 @@ const createListElement = function(elementType, item, content, parent, isTitle) 
     }
 
     const elt = document.createElement(elementType);
+
+    if (elementType === "button") {
+        elt.setAttribute("class", "delete-item");
+        
+        elt.addEventListener("click", () => {
+            project.removeItem(item);
+            displaySelectedProject();
+        });
+    }
 
     if (isTitle) {
         elt.setAttribute("for", "todo" + String(numItems));
@@ -62,9 +73,14 @@ export const displaySelectedProject = function() {
     for (let i = 0; i < selectedProject.items.length; i++) {
         const item = selectedProject.items[i];
 
-        createListElement("label", item, item.title, itemList, true);
-        createListElement("p", item, item.description, itemList, false);
-        createListElement("h3", item, item.dueDate, itemList, false);
+        createListElement("label", item, item.title, itemList, true, 
+            selectedProject);
+        createListElement("p", item, item.description, itemList, false, 
+            selectedProject);
+        createListElement("h3", item, item.dueDate, itemList, false, 
+            selectedProject);
+        createListElement("button", item, "Delete Item", itemList, false, 
+            selectedProject);
     }
 
     projContainer.appendChild(itemList);

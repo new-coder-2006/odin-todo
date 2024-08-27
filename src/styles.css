@@ -66,8 +66,6 @@ button:hover {
 .current-project ul li {
     display: flex; /* Make items flexible to align checkbox and text */
     align-items: center; /* Align checkbox vertically with text */
-    padding: 8px 0;
-    padding: 8px 0;
     position: relative;
 }
 
@@ -76,7 +74,6 @@ button:hover {
 }
 
 .current-project ul li label {
-    position: relative;
     padding-left: 30px; /* Space for custom checkbox */
     cursor: pointer; /* Pointer cursor for better UX */
     display: inline-block;
@@ -109,14 +106,20 @@ button:hover {
     transform: rotate(-10deg); /* Slight rotation for a more handwritten look */
 }
 
+.my-projects {
+    display: flex;
+    flex-direction: column;
+    padding-left: 40px;
+}
 .my-projects ul li {
     list-style-type: none;
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: left;
+    word-wrap: break-word;
 }
 
 .my-projects ul li div {
-    padding-right: 10px;
-    padding-top: 10px;
+    display: grid;
+    grid-template-columns: repeat(2, 70px);
 }

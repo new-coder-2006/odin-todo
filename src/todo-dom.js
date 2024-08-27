@@ -21,9 +21,15 @@ export const addTodoItem = function() {
         
         const dateField = document.querySelector("#date");
         const dateValue = dateField.value;
-        const [year, month, day] = dateValue.split('-');
-        const formattedDate = `${month}-${day}-${year}`;
-        const dueDate = "Due Date: " + formattedDate;
+        let dueDate;
+        
+        if (dateValue != "") {
+            const [year, month, day] = dateValue.split('-');
+            const formattedDate = `${month}-${day}-${year}`;
+            dueDate = "Due Date: " + formattedDate;
+        } else {
+            dueDate = "Due Date: TBD";
+        }  
 
         const priorityField = document.querySelector("#high-priority");
         const priority = priorityField.checked;

@@ -4,6 +4,7 @@ export class Todo {
         this._description = description;
         this._dueDate = dueDate;
         this._priority = priority;
+        this._completed = false;
     }
 
     get title() {
@@ -22,6 +23,10 @@ export class Todo {
         return this._priority;
     }
 
+    get completed() {
+        return this._completed;
+    }
+
     set title(newTitle) {
         this._title = newTitle;
     }
@@ -36,5 +41,9 @@ export class Todo {
 
     set priority(newPriority) {
         this._priority = newPriority;
+    }
+
+    toggleCompletionStatus() {
+        this._completed = !(this._completed);
     }
 }

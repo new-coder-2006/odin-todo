@@ -14,6 +14,15 @@ const createListElement = function(elementType, item, content, parent, isTitle) 
         const checkbox = document.createElement("input");
         checkbox.setAttribute("type", "checkbox");
         checkbox.setAttribute("id", "todo" + String(numItems))
+
+        if (item.completed) {
+            checkbox.checked = true;
+        }
+
+        checkbox.addEventListener("click", () => {
+            item.toggleCompletionStatus();
+        });
+
         li.appendChild(checkbox);
     }
 

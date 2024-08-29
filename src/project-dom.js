@@ -7,8 +7,7 @@ export let selectedProject = defaultProject;
 let numItems = 0;
 
 const createListElement = function(elementType, item, content, parent, isTitle,
-    project
-) {
+    project) {
     const li = document.createElement("li");
     
     if (isTitle) {
@@ -29,15 +28,6 @@ const createListElement = function(elementType, item, content, parent, isTitle,
     }
 
     const elt = document.createElement(elementType);
-
-    if (elementType === "button") {
-        elt.setAttribute("class", "delete-item");
-        
-        elt.addEventListener("click", () => {
-            project.removeItem(item);
-            displaySelectedProject();
-        });
-    }
 
     if (isTitle) {
         elt.setAttribute("for", "todo" + String(numItems));
@@ -74,13 +64,39 @@ export const displaySelectedProject = function() {
         const item = selectedProject.items[i];
 
         createListElement("label", item, item.title, itemList, true, 
-            selectedProject);
-        createListElement("p", item, item.description, itemList, false, 
-            selectedProject);
+            selectedProject, false);
+        if (item.expanded) {
+            createListElement("p", item, item.description, itemList, false, 
+                selectedProject, false);
+        }
         createListElement("h3", item, item.dueDate, itemList, false, 
-            selectedProject);
-        createListElement("button", item, "Delete Item", itemList, false, 
-            selectedProject);
+            selectedProject, false);
+
+        const buttonItem = document.createElement("li");
+        const buttonDiv = document.createElement("div");
+        const expandButton = document.createElement("button");
+        const deleteButton = document.createElement("button");
+
+        expandButton.setAttribute("class", "item-buttons");
+        deleteButton.setAttribute("class", "item-buttons");
+
+        expandButton.textContent = "Expand Item";
+        deleteButton.textContent = "Delete Item";
+
+        expandButton.addEventListener("click", () => {
+            item.toggleExpandedStatus();
+            displaySelectedProject();
+        });
+
+        deleteButton.addEventListener("click", () => {
+            selectedProject.removeItem(item);
+            displaySelectedProject();
+        });
+
+        buttonDiv.appendChild(expandButton);
+        buttonDiv.appendChild(deleteButton);
+        buttonItem.appendChild(buttonDiv);
+        itemList.appendChild(buttonItem);
     }
 
     projContainer.appendChild(itemList);

@@ -67,9 +67,6 @@ button:hover {
     display: flex; /* Make items flexible to align checkbox and text */
     align-items: center; /* Align checkbox vertically with text */
     position: relative; 
-    white-space: normal; /* Allow text to wrap */
-    overflow-wrap: break-word; /* Ensure words can break to avoid overflow */
-    word-break: break-all; /* Break long words that exceed container width */
 }
 
 .current-project ul li input[type="checkbox"] {

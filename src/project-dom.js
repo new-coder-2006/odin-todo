@@ -61,6 +61,7 @@ export const displaySelectedProject = function() {
     const itemList = document.createElement("ul");
 
     for (let i = 0; i < selectedProject.items.length; i++) {
+        const itemList = document.createElement("div");
         const item = selectedProject.items[i];
 
         createListElement("label", item, item.title, itemList, true, 

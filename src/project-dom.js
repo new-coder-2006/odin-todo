@@ -6,8 +6,7 @@ export let selectedProject = defaultProject;
 
 let numItems = 0;
 
-const createListElement = function(elementType, item, content, parent, isTitle,
-    project) {
+const createListElement = function(elementType, item, content, isTitle) {
     const li = document.createElement("li");
     
     if (isTitle) {
@@ -41,7 +40,8 @@ const createListElement = function(elementType, item, content, parent, isTitle,
     }
 
     li.appendChild(elt);
-    parent.appendChild(li);
+    
+    return li;
 }
 
 export const displaySelectedProject = function() {
@@ -61,17 +61,18 @@ export const displaySelectedProject = function() {
     const itemList = document.createElement("ul");
 
     for (let i = 0; i < selectedProject.items.length; i++) {
-        const itemList = document.createElement("div");
+        const itemContainer = document.createElement("div");
         const item = selectedProject.items[i];
 
-        createListElement("label", item, item.title, itemList, true, 
-            selectedProject, false);
+        const label = createListElement("label", item, item.title, true, false);
+        itemContainer.appendChild(label);
         if (item.expanded) {
-            createListElement("p", item, item.description, itemList, false, 
-                selectedProject, false);
+            const description = createListElement("p", item, item.description, 
+                false, false);
+            itemContainer.appendChild(description);
         }
-        createListElement("h3", item, item.dueDate, itemList, false, 
-            selectedProject, false);
+        const dueDate = createListElement("h3", item, item.dueDate, false, false);
+        itemContainer.appendChild(dueDate);
 
         const buttonItem = document.createElement("li");
         const buttonDiv = document.createElement("div");
@@ -97,7 +98,11 @@ export const displaySelectedProject = function() {
         buttonDiv.appendChild(expandButton);
         buttonDiv.appendChild(deleteButton);
         buttonItem.appendChild(buttonDiv);
-        itemList.appendChild(buttonItem);
+        itemContainer.appendChild(buttonItem);
+        if (item.priority) {
+            itemContainer.style.backgroundColor = "lightcoral";
+        }
+        itemList.appendChild(itemContainer);
     }
 
     projContainer.appendChild(itemList);

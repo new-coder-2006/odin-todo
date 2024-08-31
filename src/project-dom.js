@@ -1,7 +1,8 @@
 import {Project} from "./project.js";
+import {editTodoItem} from "./todo-dom.js";
 
 export const defaultProject = new Project("Default");   
-export const projects = [defaultProject];
+export let projects = [defaultProject];
 export let selectedProject = defaultProject;
 
 let numItems = 0;
@@ -118,7 +119,6 @@ export const changeSelectedProject = function() {
 
             for (let i = 0; i < projects.length; i++) {
                 if (projects[i].name === projName) {
-                    console.log("here");
                     selectedProject = projects[i];
                     displaySelectedProject();
                     break;
@@ -188,7 +188,6 @@ export const createProject = function() {
             projects.push(newProject);
             nameField.value = "";
             form.close();
-            console.log(projects);
             displayProjects();
         }
     });

@@ -1,7 +1,7 @@
 export class Project {
-    constructor(name) {
+    constructor(name, items = []) {
         this._name = name;
-        this._items = [];
+        this._items = items;
     }
 
     get name() {
@@ -27,5 +27,12 @@ export class Project {
                    obj.dueDate !== item.dueDate ||
                    obj.priority !== item.priority
         );
+    }
+
+    toPlainObject() {
+        return {
+          name: this._name,
+          items: this.color
+        };
     }
 }

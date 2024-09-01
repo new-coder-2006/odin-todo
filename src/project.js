@@ -32,7 +32,11 @@ export class Project {
     toPlainObject() {
         return {
           name: this._name,
-          items: this.color
+          items: this._items.map(item => item.toPlainObject())
         };
+    }
+
+    static fromPlainObject(name, items) {
+        return new Project(name, items);
     }
 }

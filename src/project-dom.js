@@ -1,11 +1,18 @@
 import {Project} from "./project.js";
 import {editTodoItem} from "./todo-dom.js";
+import {Todo} from "./todo.js";
 
 export const defaultProject = new Project("Default");   
 export let projects = [defaultProject];
 export let selectedProject = defaultProject;
 
-let numItems = 0;
+let numItems = selectedProject.items.length;
+
+const saveProjects = function() {
+    const projectsAsObjects = projects.map(project => project.toPlainObject());
+    const projectsString = JSON.stringify(projectsAsObjects);
+    localStorage.setItem("projects", projectsString);
+}
 
 const createListElement = function(elementType, item, content, isTitle) {
     const li = document.createElement("li");
@@ -153,6 +160,7 @@ export const displayProjects = function() {
 
     container.appendChild(listContainer);
     changeSelectedProject();
+    saveProjects();
 }
 
 const checkDuplicates = function(listOfProjects, name) {

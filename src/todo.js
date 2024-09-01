@@ -1,11 +1,14 @@
+import {Project} from "./project.js";
+
 export class Todo {
-    constructor(title, description, dueDate, priority) {
+    constructor(title, description, dueDate, priority, completed = false, 
+        expanded = false) {
         this._title = title;
         this._description = description;
         this._dueDate = dueDate;
         this._priority = priority;
-        this._completed = false;
-        this._expanded = false;
+        this._completed = completed;
+        this._expanded = expanded;
     }
 
     get title() {
@@ -54,5 +57,21 @@ export class Todo {
 
     toggleExpandedStatus() {
         this._expanded = !(this._expanded);
+    }
+
+    toPlainObject() {
+        return {
+          title: this._title,
+          description: this._description,
+          dueDate: this._dueDate,
+          priority: this._priority,
+          completed: this._completed,
+          expanded: this._expanded
+        };
+    }
+
+    static fromPlainObject(obj) {
+        return new Project(obj.title, obj.description, obj.dueDate, 
+            obj.priority, obj.completed, obj.expanded);
     }
 }

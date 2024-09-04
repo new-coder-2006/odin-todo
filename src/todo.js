@@ -67,11 +67,11 @@ export class Todo {
           priority: this._priority,
           completed: this._completed,
           expanded: this._expanded
-        };
+        }
     }
 
     static fromPlainObject(obj) {
-        return new Project(obj.title, obj.description, obj.dueDate, 
+        return new Todo(obj.title, obj.description, obj.dueDate, 
             obj.priority, obj.completed, obj.expanded);
     }
 }

@@ -14,6 +14,37 @@ const saveProjects = function() {
     localStorage.setItem("projects", projectsString);
 }
 
+const saveSelectedProject = function() {
+    console.log(selectedProject);
+    const selectedProjectAsObject = selectedProject.toPlainObject();
+    const selectedProjectAsString = JSON.stringify(selectedProjectAsObject);
+    localStorage.setItem("selected", selectedProjectAsString);
+}
+
+const retrievedSelectedProject = localStorage.getItem("selected");
+
+if (retrievedSelectedProject) {
+    const parsedSelected = JSON.parse(retrievedSelectedProject);
+
+    if (parsedSelected.items) {
+        const itemsAsClassInstances = [];
+            
+        for (let i = 0; i < parsedSelected.items.length; i++) {
+            const objToClassInstance = Todo.fromPlainObject(
+                parsedSelected.items[i]);
+            itemsAsClassInstances.push(objToClassInstance);
+        }
+
+        parsedSelected.items = itemsAsClassInstances;
+    }
+
+    const selected = Project.fromPlainObject(parsedSelected.name, 
+        parsedSelected.items);
+    selectedProject = selected;
+}
+
+
+
 const createListElement = function(elementType, item, content, isTitle) {
     const li = document.createElement("li");
     
@@ -115,6 +146,7 @@ export const displaySelectedProject = function() {
 
     projContainer.appendChild(itemList);
     body.insertBefore(projContainer, body.firstChild);
+    saveSelectedProject();
 }
 
 export const changeSelectedProject = function() {

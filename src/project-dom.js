@@ -10,12 +10,12 @@ let numItems = selectedProject.items.length;
 
 const saveProjects = function() {
     const projectsAsObjects = projects.map(project => project.toPlainObject());
+    console.log(projectsAsObjects);
     const projectsString = JSON.stringify(projectsAsObjects);
     localStorage.setItem("projects", projectsString);
 }
 
 const saveSelectedProject = function() {
-    console.log(selectedProject);
     const selectedProjectAsObject = selectedProject.toPlainObject();
     const selectedProjectAsString = JSON.stringify(selectedProjectAsObject);
     localStorage.setItem("selected", selectedProjectAsString);
@@ -43,7 +43,31 @@ if (retrievedSelectedProject) {
     selectedProject = selected;
 }
 
+const retrievedProjects = localStorage.getItem("projects");
 
+if (retrievedProjects) {
+    // Parse the JSON string back to an array of plain objects
+    const parsedProjects = JSON.parse(retrievedProjects);
+
+    for (let i = 0; i < parsedProjects.length; i++) {
+        if (parsedProjects[i] && parsedProjects[i].items) {
+            const itemsAsClassInstances = [];
+            
+            for (let j = 0; j < parsedProjects[i].items.length; j++) {
+                const objToClassInstance = Todo.fromPlainObject(
+                    parsedProjects[i].items[j]);
+                itemsAsClassInstances.push(objToClassInstance);
+            }
+
+            parsedProjects[i].items = itemsAsClassInstances;
+        }
+    }
+  
+    // Convert each plain object back to a class instance
+    const projectsArray = parsedProjects.map(obj => Project.fromPlainObject(
+        obj.name, obj.items));
+    projects = projectsArray;
+}
 
 const createListElement = function(elementType, item, content, isTitle) {
     const li = document.createElement("li");
@@ -60,6 +84,8 @@ const createListElement = function(elementType, item, content, isTitle) {
 
         checkbox.addEventListener("click", () => {
             item.toggleCompletionStatus();
+            saveProjects();
+            saveSelectedProject();
         });
 
         li.appendChild(checkbox);
@@ -127,11 +153,15 @@ export const displaySelectedProject = function() {
         expandButton.addEventListener("click", () => {
             item.toggleExpandedStatus();
             displaySelectedProject();
+            saveProjects();
+            saveSelectedProject();
         });
 
         deleteButton.addEventListener("click", () => {
             selectedProject.removeItem(item);
             displaySelectedProject();
+            saveProjects();
+            saveSelectedProject();
         });
 
         buttonDiv.appendChild(expandButton);

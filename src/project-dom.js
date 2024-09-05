@@ -192,7 +192,25 @@ export const changeSelectedProject = function() {
                     displaySelectedProject();
                     break;
                 }
-            }2
+            }
+        });
+    });
+}
+
+export const deleteProject = function() {
+    const deleteButtons = document.querySelectorAll(".delete");
+
+    deleteButtons.forEach(btn => {
+        btn.addEventListener("click", () => {
+            const projName = btn.id;
+            console.log(projName);
+
+            projects = projects.filter(project => project.name !== projName);
+            selectedProject = projects[0];
+            displayProjects();
+            displaySelectedProject();
+            saveProjects();
+            saveSelectedProject();
         });
     });
 }
@@ -217,11 +235,17 @@ export const displayProjects = function() {
         selectButton.setAttribute("id", projects[i].name);
         selectButton.textContent = "Select";
         proj.appendChild(selectButton);
+        const deleteButton = document.createElement("button");
+        deleteButton.setAttribute("class", "delete");
+        deleteButton.setAttribute("id", projects[i].name);
+        deleteButton.textContent = "Delete";
+        proj.appendChild(deleteButton);
         listContainer.appendChild(proj);
     }
 
     container.appendChild(listContainer);
     changeSelectedProject();
+    deleteProject();
     saveProjects();
 }
 

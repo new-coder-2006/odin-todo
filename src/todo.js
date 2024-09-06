@@ -1,5 +1,10 @@
-import {Project} from "./project.js";
-
+/**
+ * Class for creating todo list items. Each item has a title and description,
+ * which are strings, a due date of type "date", and three boolean values 
+ * representing whether or not the item is high priority, whether or not the
+ * item has been marked as completed, and whether or not the item has been 
+ * expanded to show the description, respectively.
+ */
 export class Todo {
     constructor(title, description, dueDate, priority, completed = false, 
         expanded = false) {
@@ -58,7 +63,11 @@ export class Todo {
     toggleExpandedStatus() {
         this._expanded = !(this._expanded);
     }
-
+    /**
+     * 
+     * @returns the todo list item in object form, so that it can be saved to
+     * localStorage
+     */
     toPlainObject() {
         return {
           title: this._title,
@@ -69,7 +78,12 @@ export class Todo {
           expanded: this._expanded
         }
     }
-
+    /**
+     * 
+     * @param {Object} obj 
+     * @returns a new Todo list item from a plain object that was retrieved from
+     * localStorage
+     */
     static fromPlainObject(obj) {
         return new Todo(obj.title, obj.description, obj.dueDate, 
             obj.priority, obj.completed, obj.expanded);

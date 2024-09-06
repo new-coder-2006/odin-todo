@@ -1,6 +1,26 @@
 import { displayProjects, selectedProject, displaySelectedProject } from "./project-dom.js";
 import { Todo } from "./todo.js";
 /**
+ * Helper function used by addTodoItem to check whether the proposed name of
+ * an item is identical to the name of an already-existing item. Enforces the 
+ * invariant that no two items in a single todo list can have the same name.
+ * @param {array of Items} listOfItems 
+ * @param {string} name 
+ * @returns boolean value representing whether or not an item with the specified
+ * name already exists
+ */
+const checkDuplicates = function(listOfItems, name) {
+    for (let i = 0; i < listOfItems.length; i++) {
+        // Invariant is case-insensitive, meaning you can't create two projects
+        // with names that have identical spellings but different capitalization
+        if (listOfItems[i].title.toLowerCase() === name.toLowerCase()) {
+            return true;
+        }
+    }
+
+    return false;
+}
+/**
  * Function that allows the user to add a new todo list item to a project
  */
 export const addTodoItem = function() {
@@ -43,6 +63,8 @@ export const addTodoItem = function() {
         // are required)
         if (title === "") {
             alert("Please enter a title for this list item!");
+        } else if (checkDuplicates(selectedProject.items, title)) {
+            alert("Please enter a unique name for this item!");
         } else {
             const newItem = new Todo(title, description, dueDate, priority);
             // Can only add items to the project that is currently selected for

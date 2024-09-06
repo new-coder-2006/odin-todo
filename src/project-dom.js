@@ -310,7 +310,7 @@ export const displayProjects = function() {
 }
 /**
  * Helper function used by createProject to check whether the proposed name of
- * a project is identical to the name of a previous project. Enforces the 
+ * a project is identical to the name of an already-exisiting project. Enforces the 
  * invariant that no two projects can have the same name.
  * @param {Project array} listOfProjects 
  * @param {string} name 

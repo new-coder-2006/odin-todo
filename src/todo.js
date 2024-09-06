@@ -4,6 +4,9 @@
  * representing whether or not the item is high priority, whether or not the
  * item has been marked as completed, and whether or not the item has been 
  * expanded to show the description, respectively.
+ * 
+ * INVARIANT: NO TWO ITEMS IN A SINGLE TODO LIST CAN HAVE THE SAME NAME (THIS IS
+ * CASE INSENSITIVE).
  */
 export class Todo {
     constructor(title, description, dueDate, priority, completed = false, 

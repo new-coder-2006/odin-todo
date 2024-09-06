@@ -3,6 +3,7 @@ import {Todo} from "./todo.js";
 // Create an initial default project when the user first begins using the app
 export const defaultProject = new Project("Default");   
 // Store all of the projects the user has created
+// INVARIANT: ALL PROJECTS MUST HAVE UNIQUE NAMES
 export let projects = [defaultProject];
 // Store the project whose todo list is currently being displayed
 export let selectedProject = defaultProject;
@@ -209,13 +210,18 @@ export const displaySelectedProject = function() {
     saveSelectedProject();
 }
 /**
- * 
+ * Function to add event listeners to the select button for each project, so 
+ * that, when clicked, the applicable project becomes the selected project 
+ * that the user is viewing.
  */
 export const createSelectButtons = function() {
     const selectButtons = document.querySelectorAll(".select");
 
     selectButtons.forEach(btn => {
         btn.addEventListener("click", () => {
+            // The select buttons are linked to the applicable project in the
+            // project list by having the project's name set as the applicable 
+            // select button's id
             const projName = btn.id;
 
             for (let i = 0; i < projects.length; i++) {
@@ -228,7 +234,11 @@ export const createSelectButtons = function() {
         });
     });
 }
-
+/**
+ * Function to facilitate deleting projects. Only works if the user has stored
+ * more than one project. Otherwise throws an alert that a user cannot delete
+ * their only project.
+ */
 export const deleteProject = function() {
     const deleteButtons = document.querySelectorAll(".delete");
 
@@ -238,10 +248,17 @@ export const deleteProject = function() {
                 alert("Unable to delete this project; at least one project\
                      must be active");
             } else {
+                // Delete buttons are linked to projects in the same way as 
+                // select buttons described above
                 const projName = btn.id;
 
                 projects = projects.filter(project => project.name !== projName);
-                selectedProject = projects[0];
+                // Handle case where the project being deleted is the currently
+                // selected project
+                if (projName === selectedProject.name) {
+                    selectedProject = projects[0];
+                }
+
                 displayProjects();
                 displaySelectedProject();
                 saveProjects();
@@ -250,17 +267,22 @@ export const deleteProject = function() {
         });
     });
 }
-
+/**
+ * Function to display a list of the user's projects, as well as buttons to 
+ * select and delete each project.
+ */
 export const displayProjects = function() {
     const container = document.querySelector(".my-projects");
     const ul = document.querySelector(".my-projects ul");
-
+    // If there is already an existing list of projects (which there should be),
+    // remove it so it can be replaced with the updated list of projects
     if (ul) {
         container.removeChild(ul);
     }
     
     const listContainer = document.createElement("ul");
-
+    // Iterate over the list of projects and display the name, select button,
+    // and delete button of each one
     for (let i = 0; i < projects.length; i++) {
         const proj = document.createElement("li");
         const textDiv = document.createElement("div");
@@ -280,13 +302,25 @@ export const displayProjects = function() {
     }
 
     container.appendChild(listContainer);
+    // Make sure to add event listeners to the select and delete buttons
     createSelectButtons();
     deleteProject();
+    // Save the projects to localStorage
     saveProjects();
 }
-
+/**
+ * Helper function used by createProject to check whether the proposed name of
+ * a project is identical to the name of a previous project. Enforces the 
+ * invariant that no two projects can have the same name.
+ * @param {Project array} listOfProjects 
+ * @param {string} name 
+ * @returns boolean value representing whether a previously created project has
+ * the same name as the specified name
+ */
 const checkDuplicates = function(listOfProjects, name) {
     for (let i = 0; i < listOfProjects.length; i++) {
+        // Invariant is case-insensitive, meaning you can't create two projects
+        // with names that have identical spellings but different capitalization
         if (listOfProjects[i].name.toLowerCase() === name.toLowerCase()) {
             return true;
         }
@@ -294,7 +328,10 @@ const checkDuplicates = function(listOfProjects, name) {
 
     return false;
 }
-
+/**
+ * Function that enables a user to create a new project via the use of a dialog
+ * box.
+ */
 export const createProject = function() {
     const newProjButton = document.querySelector(".create-project");
     const form = document.querySelector(".proj-dialog");
@@ -304,11 +341,13 @@ export const createProject = function() {
     newProjButton.addEventListener("click", () => {
         form.showModal();
     });
-
+    // Add event listener to the submit button of the dialog so that, if all 
+    // the required field is completed, when it is clicked a new project is
+    // created and saved
     submitButton.addEventListener("click", () => {
         const nameField = document.querySelector("#name");
         const name = nameField.value;
-
+        // Enforce requirement that project must have a name
         if (name === "") {
             alert("Please enter a name for your project!");
         } else if (checkDuplicates(projects, name)) {
@@ -321,7 +360,8 @@ export const createProject = function() {
             displayProjects();
         }
     });
-
+    // Add event listener to cancel button so that when it is clicked, the 
+    // dialog box is closed and the name field is reset
     cancelButton.addEventListener("click", () => {
         const nameField = document.querySelector("#name");
         nameField.value = "";

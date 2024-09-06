@@ -1,20 +1,27 @@
 import {Project} from "./project.js";
-import {editTodoItem} from "./todo-dom.js";
 import {Todo} from "./todo.js";
-
+// Create an initial default project when the user first begins using the app
 export const defaultProject = new Project("Default");   
+// Store all of the projects the user has created
 export let projects = [defaultProject];
+// Store the project whose todo list is currently being displayed
 export let selectedProject = defaultProject;
-
+// Global variable used in the creation of id's for the titles/checkboxes of 
+// todo list items
 let numItems = selectedProject.items.length;
-
+/**
+ * Function to save the user's projects in localStorage so that they are 
+ * maintained across multiple sessions.
+ */
 const saveProjects = function() {
     const projectsAsObjects = projects.map(project => project.toPlainObject());
-    console.log(projectsAsObjects);
     const projectsString = JSON.stringify(projectsAsObjects);
     localStorage.setItem("projects", projectsString);
 }
-
+/**
+ * Function to save the project that the user has selected as the one they are
+ * currently viewing, so that the project remains selected across multiple sessions.
+ */
 const saveSelectedProject = function() {
     const selectedProjectAsObject = selectedProject.toPlainObject();
     const selectedProjectAsString = JSON.stringify(selectedProjectAsObject);
@@ -22,10 +29,10 @@ const saveSelectedProject = function() {
 }
 
 const retrievedSelectedProject = localStorage.getItem("selected");
-
+// If a selected project has been saved, parse and render it
 if (retrievedSelectedProject) {
     const parsedSelected = JSON.parse(retrievedSelectedProject);
-
+    // Parse and render any todo list items of the saved project
     if (parsedSelected.items) {
         const itemsAsClassInstances = [];
             
@@ -44,13 +51,12 @@ if (retrievedSelectedProject) {
 }
 
 const retrievedProjects = localStorage.getItem("projects");
-
+// Parse and render the user's saved projects
 if (retrievedProjects) {
-    // Parse the JSON string back to an array of plain objects
     const parsedProjects = JSON.parse(retrievedProjects);
-
+    // Parse and render the items of each saved project
     for (let i = 0; i < parsedProjects.length; i++) {
-        if (parsedProjects[i] && parsedProjects[i].items) {
+        if (parsedProjects[i].items) {
             const itemsAsClassInstances = [];
             
             for (let j = 0; j < parsedProjects[i].items.length; j++) {
@@ -62,22 +68,30 @@ if (retrievedProjects) {
             parsedProjects[i].items = itemsAsClassInstances;
         }
     }
-  
     // Convert each plain object back to a class instance
     const projectsArray = parsedProjects.map(obj => Project.fromPlainObject(
         obj.name, obj.items));
     projects = projectsArray;
 }
-
+/**
+ * Create a list element of the specified type with the provided text content.
+ * Used to assist with rendering Todo list items.
+ * @param {string} elementType 
+ * @param {Todo} item 
+ * @param {string} content 
+ * @param {boolean} isTitle 
+ * @returns the created list item
+ */
 const createListElement = function(elementType, item, content, isTitle) {
     const li = document.createElement("li");
-    
+    // If this element is the item's title, add a checkbox so the user can
+    // indicate whether the item has been completed.
     if (isTitle) {
         numItems++;
         const checkbox = document.createElement("input");
         checkbox.setAttribute("type", "checkbox");
         checkbox.setAttribute("id", "todo" + String(numItems))
-
+        // Render a check in the checkbox if the item's completed status is true
         if (item.completed) {
             checkbox.checked = true;
         }
@@ -95,6 +109,7 @@ const createListElement = function(elementType, item, content, isTitle) {
 
     if (isTitle) {
         elt.setAttribute("for", "todo" + String(numItems));
+
         if (item.priority) {
             elt.textContent = content + "(!)";
         } else {
@@ -108,15 +123,19 @@ const createListElement = function(elementType, item, content, isTitle) {
     
     return li;
 }
-
+/**
+ * Function to display the title and todo list of the user's currently selected
+ * project.
+ */
 export const displaySelectedProject = function() {
     const body = document.querySelector("body");
     const currentContainer = document.querySelector(".current-project");
-
+    // If there is a previously displayed project (which there always should be),
+    // remove it so it can be replaced with the currently selected project
     if (currentContainer) {
         body.removeChild(currentContainer);
     }
-
+    // Display the name of the selected project
     const projContainer = document.createElement("div");
     projContainer.setAttribute("class", "current-project");
     const projNameContainer = document.createElement("h1");
@@ -124,13 +143,15 @@ export const displaySelectedProject = function() {
     projContainer.appendChild(projNameContainer);
 
     const itemList = document.createElement("ul");
-
+    // Display all the items of the selected project
     for (let i = 0; i < selectedProject.items.length; i++) {
         const itemContainer = document.createElement("div");
         const item = selectedProject.items[i];
-
+        // Create element for the name of the item
         const label = createListElement("label", item, item.title, true, false);
         itemContainer.appendChild(label);
+        // Only print the item's notes/description if the item is in an expanded
+        // state
         if (item.expanded) {
             const description = createListElement("p", item, item.description, 
                 false, false);
@@ -138,8 +159,11 @@ export const displaySelectedProject = function() {
         }
         const dueDate = createListElement("h3", item, item.dueDate, false, false);
         itemContainer.appendChild(dueDate);
-
+        // Handle creation of buttons to expand and delete items outside of 
+        // createListElement so that event listeners can be added to them
         const buttonItem = document.createElement("li");
+        // Store both buttons in a single div to more easily display them side
+        // by side
         const buttonDiv = document.createElement("div");
         const expandButton = document.createElement("button");
         const deleteButton = document.createElement("button");
@@ -153,6 +177,8 @@ export const displaySelectedProject = function() {
         expandButton.addEventListener("click", () => {
             item.toggleExpandedStatus();
             displaySelectedProject();
+            // Make sure to save the project in its expanded/unexpanded state
+            // so that it will carry across multiple sessions
             saveProjects();
             saveSelectedProject();
         });
@@ -168,6 +194,7 @@ export const displaySelectedProject = function() {
         buttonDiv.appendChild(deleteButton);
         buttonItem.appendChild(buttonDiv);
         itemContainer.appendChild(buttonItem);
+        // Set background color of high-priority items to be light red
         if (item.priority) {
             itemContainer.style.backgroundColor = "lightcoral";
         }
@@ -175,11 +202,16 @@ export const displaySelectedProject = function() {
     }
 
     projContainer.appendChild(itemList);
+    // Ensure the container for the selected project is always the first HTML
+    // element so that it doesn't get repositioned when a new element is 
+    // selected
     body.insertBefore(projContainer, body.firstChild);
     saveSelectedProject();
 }
-
-export const changeSelectedProject = function() {
+/**
+ * 
+ */
+export const createSelectButtons = function() {
     const selectButtons = document.querySelectorAll(".select");
 
     selectButtons.forEach(btn => {
@@ -202,15 +234,19 @@ export const deleteProject = function() {
 
     deleteButtons.forEach(btn => {
         btn.addEventListener("click", () => {
-            const projName = btn.id;
-            console.log(projName);
+            if (projects.length < 2) {
+                alert("Unable to delete this project; at least one project\
+                     must be active");
+            } else {
+                const projName = btn.id;
 
-            projects = projects.filter(project => project.name !== projName);
-            selectedProject = projects[0];
-            displayProjects();
-            displaySelectedProject();
-            saveProjects();
-            saveSelectedProject();
+                projects = projects.filter(project => project.name !== projName);
+                selectedProject = projects[0];
+                displayProjects();
+                displaySelectedProject();
+                saveProjects();
+                saveSelectedProject();
+            }
         });
     });
 }
@@ -244,7 +280,7 @@ export const displayProjects = function() {
     }
 
     container.appendChild(listContainer);
-    changeSelectedProject();
+    createSelectButtons();
     deleteProject();
     saveProjects();
 }

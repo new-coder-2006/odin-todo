@@ -1,130 +1,139 @@
 /* styles.css */
-@import url('https://fonts.googleapis.com/css2?family=Caveat&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Caveat&display=swap");
 
 body {
-    font-family: 'Arial', sans-serif;
-    background-color: #f4f4f9;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    margin: 0;
+  font-family: "Arial", sans-serif;
+  background-color: #f4f4f9;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
 }
 
 button {
-    padding: 10px;
-    margin-top: 10px;
-    background-color: #ff6347; /* tomato red */
-    color: white;
-    border: none;
-    cursor: pointer;
-    border-radius: 4px;
-    font-weight: bold;
+  padding: 10px;
+  margin-top: 10px;
+  background-color: #ff6347; 
+  color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 4px;
+  font-weight: bold;
 }
 
 button:hover {
-    background-color: #e55347;
+  background-color: #e55347;
 }
 
 .current-project {
-    font-family: 'Caveat', cursive;
-    background: #fff;
-    border: 1px solid #ddd;
-    width: 300px;
-    padding: 20px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    position: relative;
+  font-family: "Caveat", cursive;
+  background: #fff;
+  border: 1px solid #ddd;
+  width: 300px;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  position: relative;
 }
 
 .current-project::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 20px;
-    background-color: #ffdf5b; 
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-    border-bottom: 2px solid #e9c46a;
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 20px;
+  background-color: #ffdf5b;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  border-bottom: 2px solid #e9c46a;
 }
 
 .current-project h1 {
-    font-size: 24px;
-    margin-bottom: 10px;
-    border-bottom: 2px solid #e9c46a;
-    padding-bottom: 5px;
-    color: #333;
+  font-size: 24px;
+  margin-bottom: 10px;
+  border-bottom: 2px solid #e9c46a;
+  padding-bottom: 5px;
+  color: #333;
 }
 
 .current-project ul {
-    list-style-type: none;
-    padding: 0;
-    margin: 0;
-    padding-left: 20px;
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  padding-left: 20px;
 }
 
 .current-project ul li {
-    display: flex; /* Make items flexible to align checkbox and text */
-    align-items: center; /* Align checkbox vertically with text */
-    position: relative; 
+  display: flex; /* Make items flexible to align checkbox and text */
+  align-items: center; /* Align checkbox vertically with text */
+  position: relative;
 }
 
 .current-project ul li input[type="checkbox"] {
-    display: none;
+  display: none;
 }
 
 .current-project ul li label {
-    padding-left: 30px; /* Space for custom checkbox */
-    cursor: pointer; /* Pointer cursor for better UX */
-    display: inline-block;
-    line-height: 1.2; /* Align label text */
-    font-size: 25px;
+  padding-left: 30px; /* Space for custom checkbox */
+  cursor: pointer; 
+  display: inline-block;
+  line-height: 1.2; /* Align label text */
+  font-size: 25px;
 }
 
 .current-project ul li label::before {
-    content: '';
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: 20px;
-    height: 20px;
-    border: 2px solid #333; /* Border color of the checkbox */
-    background-color: #fff; /* Background color of the checkbox */
-    border-radius: 4px; /* Rounded corners */
-    box-sizing: border-box; /* Ensure border-box model */
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 20px;
+  height: 20px;
+  border: 2px solid #333; /* Border color of the checkbox */
+  background-color: #fff; /* Background color of the checkbox */
+  border-radius: 4px; 
+  box-sizing: border-box; 
 }
 
 /* Handwritten checkmark for custom checkbox */
 .current-project ul li input[type="checkbox"]:checked + label::after {
-    content: '✓'; /* Checkmark symbol */
-    position: absolute;
-    left: 3px; /* Adjust to center the checkmark */
-    top: -3px; /* Adjust to center the checkmark */
-    font-size: 22px; /* Size of the checkmark */
-    color: #333; /* Color of the checkmark */
-    font-family: 'Caveat', cursive; /* Use the handwritten font */
-    transform: rotate(-10deg); /* Slight rotation for a more handwritten look */
+  content: "✓"; 
+  position: absolute;
+  left: 3px; /* Adjust to center the checkmark */
+  top: -3px; /* Adjust to center the checkmark */
+  font-size: 22px; /* Size of the checkmark */
+  color: #333; 
+  font-family: "Caveat", cursive; 
+  transform: rotate(-10deg); /* Slight rotation for a more handwritten look */
+}
+
+.delete {
+  margin: 10px;
 }
 
 .item-buttons {
-    margin-bottom: 10px;
-    margin-right: 10px;
+  margin-bottom: 10px;
+  margin-right: 10px;
 }
 
 .my-projects {
-    display: flex;
-    flex-direction: column;
-    padding-left: 40px;
+  display: flex;
+  flex-direction: column;
+  padding-left: 40px;
 }
 .my-projects ul li {
-    list-style-type: none;
-    display: flex;
-    align-items: center;
-    justify-content: left;
-    word-wrap: break-word;
+  list-style-type: none;
+  display: flex;
+  align-items: center;
+  justify-content: left;
+  word-wrap: break-word;
 }
 
 .my-projects ul li div {
-    display: grid;
-    grid-template-columns: repeat(2, 70px);
+  display: grid;
+  grid-template-columns: repeat(2, 70px);
 }
+
+.select {
+  margin: 10px;
+}
+

@@ -1,40 +1,40 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
-</head>
-<body>
+  </head>
+  <body>
     <div class="current-project"></div>
     <div class="my-projects">
-        <button class="create-project">Create New Project</button>
-        <button class="add-item">Add New Item to Project</button>
-        <h1>My Projects</h1>
+      <button class="create-project">Create New Project</button>
+      <button class="add-item">Add New Item to Project</button>
+      <h1>My Projects</h1>
     </div>
     <dialog class="proj-dialog">
-        <form>
-            <label for="name">Name of Project</label>
-            <input type="text" id="name" name="name" required>
-        </form>
-        <button class="submit-proj">Submit</button>
-        <button class="cancel-proj">Cancel</button>
+      <form>
+        <label for="name">Name of Project</label>
+        <input type="text" id="name" name="name" required />
+      </form>
+      <button class="submit-proj">Submit</button>
+      <button class="cancel-proj">Cancel</button>
     </dialog>
     <dialog class="item-dialog">
-        <form>
-            <label for="title">Title</label>
-            <input type="text" id="title" name="title" required>
-            <label for="description">Description</label>
-            <input type="text" id="description" name="description">
-            <label for="date">Due Date</label>
-            <input type="date" id="date" name="date">
-            <label for="high-priority">
-                <input type="checkbox" id="high-priority" name="high_priority">
-                High Priority
-            </label>
-        </form>
-        <button class="submit-item">Submit</button>
-        <button class="cancel-item">Cancel</button>
+      <form>
+        <label for="title">Title</label>
+        <input type="text" id="title" name="title" required />
+        <label for="description">Description</label>
+        <input type="text" id="description" name="description" />
+        <label for="date">Due Date</label>
+        <input type="date" id="date" name="date" />
+        <label for="high-priority">
+          <input type="checkbox" id="high-priority" name="high_priority" />
+          High Priority
+        </label>
+      </form>
+      <button class="submit-item">Submit</button>
+      <button class="cancel-item">Cancel</button>
     </dialog>
-</body>
+  </body>
 </html>

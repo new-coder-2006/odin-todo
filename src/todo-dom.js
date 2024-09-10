@@ -2,14 +2,19 @@ import {
   displayProjects,
   selectedProject,
   displaySelectedProject,
-  currentTitle
+  currentTitle,
 } from "./project-dom.js";
 import { Todo } from "./todo.js";
-
+// Global variable to track whether an item is being edited. Used by addTodoItem
+// to ensure that submission of the item form behaves properly
 let editing = false;
+/**
+ * Helper function to allow the value of the editing variable to be changed by
+ * project-dom.js.
+ */
 export const setEditing = function () {
   editing = true;
-}
+};
 /**
  * Helper function used by addTodoItem to check whether the proposed name of
  * an item is identical to the name of an already-existing item. Enforces the
@@ -76,11 +81,19 @@ export const addTodoItem = function () {
       alert("Please enter a title for this list item!");
     } else if (!editing && checkDuplicates(selectedProject.items, title)) {
       alert("Please enter a unique name for this item!");
-    } else if (editing && currentTitle !== title && checkDuplicates(selectedProject.items, title)) {
-      console.log("current title: " + currentTitle);
-      console.log("title: " + title);
+    } else if (
+      editing &&
+      currentTitle !== title &&
+      checkDuplicates(selectedProject.items, title)
+    ) {
+      // We don't want to raise this alert if the user is editing an item and
+      // leaves its name unchanged. Without this separate conditional, an alert
+      // would be thrown in that situation
       alert("Please enter a unique name for this item!");
     } else {
+      // If the form is being submitted in connection with an edit rather than
+      // creation of a new item, need to make sure we remove the prior instance
+      // of the item so it can be replaced with the edited version
       if (editing) {
         selectedProject.removeItem(currentTitle);
       }
@@ -97,6 +110,10 @@ export const addTodoItem = function () {
       form.close();
       displayProjects();
       displaySelectedProject();
+      // Make sure the value of editing is reset once the form has been
+      // submitted. Could enclose this in a conditional so that it only fires
+      // if editing is currently true, but seems cheaper to just go ahead and
+      // reset it to false on every submission
       editing = false;
     }
   });
@@ -105,6 +122,8 @@ export const addTodoItem = function () {
     const nameField = document.querySelector("#name");
     nameField.value = "";
     form.close();
+    // Make sure to reset the value of editing in case the form was opened in
+    // connection with an edit
     editing = false;
   });
 };

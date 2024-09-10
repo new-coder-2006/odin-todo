@@ -8,6 +8,10 @@ export const defaultProject = new Project("Default");
 export let projects = [defaultProject];
 // Store the project whose todo list is currently being displayed
 export let selectedProject = defaultProject;
+// This is used to store the current title of an item that is being edited.
+// Used to ensure the alert regarding unique item titles doesn't fire when a
+// user edits an item but does not change its name, and also used to remove
+// the previous instantiation of an item when a user submits an edit
 export let currentTitle = "";
 // Global variable used in the creation of id's for the titles/checkboxes of
 // todo list items
@@ -171,10 +175,10 @@ export const displaySelectedProject = function () {
     }
     const dueDate = createListElement("h3", item, item.dueDate, false, false);
     itemContainer.appendChild(dueDate);
-    // Handle creation of buttons to expand and delete items outside of
+    // Handle creation of buttons to expand, edit, and delete items outside of
     // createListElement so that event listeners can be added to them
     const buttonItem = document.createElement("li");
-    // Store both buttons in a single div to more easily display them side
+    // Store all three buttons in a single div to more easily display them side
     // by side
     const buttonDiv = document.createElement("div");
     const expandButton = document.createElement("button");
@@ -182,8 +186,9 @@ export const displaySelectedProject = function () {
     const deleteButton = document.createElement("button");
 
     expandButton.setAttribute("class", "item-buttons");
+    // Use a different class name for edit buttons so they can be selected in
+    // todo-dom.js
     editButton.setAttribute("class", "edit-buttons");
-    editButton.setAttribute("id", item.title);
     deleteButton.setAttribute("class", "item-buttons");
 
     expandButton.textContent = "Expand Item";
@@ -200,13 +205,18 @@ export const displaySelectedProject = function () {
     });
 
     editButton.addEventListener("click", () => {
+      // Set the value of the editing variable in todo-dom.js to be true so
+      // that form submission is handled appropriately
       setEditing();
       const form = document.querySelector(".item-dialog");
 
       const titleField = document.querySelector("#title");
       const descriptionField = document.querySelector("#description");
       const priorityField = document.querySelector("#high-priority");
-
+      // Ensure that form fields have their existing values (but note that I
+      // wasn't sure how to do this for due date and I wasn't too fussed about
+      // it given that it is not too cumbersome to just set the date again, so it
+      // isn't listed here)
       titleField.value = item.title;
       descriptionField.value = item.description;
       priorityField.checked = item.priority;
@@ -218,9 +228,9 @@ export const displaySelectedProject = function () {
 
     deleteButton.addEventListener("click", () => {
       selectedProject.removeItem(item.title);
-      displaySelectedProject();
       saveProjects();
       saveSelectedProject();
+      displaySelectedProject();
     });
 
     buttonDiv.appendChild(expandButton);

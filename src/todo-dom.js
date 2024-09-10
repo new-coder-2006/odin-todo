@@ -2,8 +2,14 @@ import {
   displayProjects,
   selectedProject,
   displaySelectedProject,
+  currentTitle
 } from "./project-dom.js";
 import { Todo } from "./todo.js";
+
+let editing = false;
+export const setEditing = function () {
+  editing = true;
+}
 /**
  * Helper function used by addTodoItem to check whether the proposed name of
  * an item is identical to the name of an already-existing item. Enforces the
@@ -32,6 +38,8 @@ export const addTodoItem = function () {
   const form = document.querySelector(".item-dialog");
   const submitButton = document.querySelector(".submit-item");
   const cancelButton = document.querySelector(".cancel-item");
+  const titleField = document.querySelector("#title");
+
   // When the button is clicked to create an item, show the user a dialog box
   // with fields for the relevant information
   newItemButton.addEventListener("click", () => {
@@ -39,7 +47,6 @@ export const addTodoItem = function () {
   });
 
   submitButton.addEventListener("click", () => {
-    const titleField = document.querySelector("#title");
     const title = titleField.value;
 
     const descriptionField = document.querySelector("#description");
@@ -67,9 +74,16 @@ export const addTodoItem = function () {
     // are required)
     if (title === "") {
       alert("Please enter a title for this list item!");
-    } else if (checkDuplicates(selectedProject.items, title)) {
+    } else if (!editing && checkDuplicates(selectedProject.items, title)) {
+      alert("Please enter a unique name for this item!");
+    } else if (editing && currentTitle !== title && checkDuplicates(selectedProject.items, title)) {
+      console.log("current title: " + currentTitle);
+      console.log("title: " + title);
       alert("Please enter a unique name for this item!");
     } else {
+      if (editing) {
+        selectedProject.removeItem(currentTitle);
+      }
       const newItem = new Todo(title, description, dueDate, priority);
       // Can only add items to the project that is currently selected for
       // display
@@ -83,6 +97,7 @@ export const addTodoItem = function () {
       form.close();
       displayProjects();
       displaySelectedProject();
+      editing = false;
     }
   });
   // Add event listener so that the user can cancel creation of a new item
@@ -90,5 +105,6 @@ export const addTodoItem = function () {
     const nameField = document.querySelector("#name");
     nameField.value = "";
     form.close();
+    editing = false;
   });
 };

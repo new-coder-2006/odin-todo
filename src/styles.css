@@ -110,9 +110,10 @@ button:hover {
   margin: 10px;
 }
 
-.item-buttons {
+.item-buttons, .edit-buttons {
   margin-bottom: 10px;
   margin-right: 10px;
+  font-size: 12px;
 }
 
 .my-projects {

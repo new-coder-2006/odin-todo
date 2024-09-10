@@ -34,13 +34,10 @@ export class Project {
    * associated with the item is clicked.
    * @param {Item} item to delete
    */
-  removeItem(item) {
+  removeItem(title) {
     this._items = this._items.filter(
       (obj) =>
-        obj.title !== item.title ||
-        obj.description !== item.description ||
-        obj.dueDate !== item.dueDate ||
-        obj.priority !== item.priority
+        obj.title !== title 
     );
   }
   /**

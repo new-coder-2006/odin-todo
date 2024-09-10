@@ -1,5 +1,6 @@
 import { Project } from "./project.js";
 import { Todo } from "./todo.js";
+import { setEditing } from "./todo-dom.js";
 // Create an initial default project when the user first begins using the app
 export const defaultProject = new Project("Default");
 // Store all of the projects the user has created
@@ -7,6 +8,7 @@ export const defaultProject = new Project("Default");
 export let projects = [defaultProject];
 // Store the project whose todo list is currently being displayed
 export let selectedProject = defaultProject;
+export let currentTitle = "";
 // Global variable used in the creation of id's for the titles/checkboxes of
 // todo list items
 let numItems = selectedProject.items.length;
@@ -113,6 +115,7 @@ const createListElement = function (elementType, item, content, isTitle) {
 
   if (isTitle) {
     elt.setAttribute("for", "todo" + String(numItems));
+    elt.setAttribute("id", content);
 
     if (item.priority) {
       elt.textContent = content + "(!)";
@@ -175,12 +178,16 @@ export const displaySelectedProject = function () {
     // by side
     const buttonDiv = document.createElement("div");
     const expandButton = document.createElement("button");
+    const editButton = document.createElement("button");
     const deleteButton = document.createElement("button");
 
     expandButton.setAttribute("class", "item-buttons");
+    editButton.setAttribute("class", "edit-buttons");
+    editButton.setAttribute("id", item.title);
     deleteButton.setAttribute("class", "item-buttons");
 
     expandButton.textContent = "Expand Item";
+    editButton.textContent = "Edit Item";
     deleteButton.textContent = "Delete Item";
 
     expandButton.addEventListener("click", () => {
@@ -192,14 +199,32 @@ export const displaySelectedProject = function () {
       saveSelectedProject();
     });
 
+    editButton.addEventListener("click", () => {
+      setEditing();
+      const form = document.querySelector(".item-dialog");
+
+      const titleField = document.querySelector("#title");
+      const descriptionField = document.querySelector("#description");
+      const priorityField = document.querySelector("#high-priority");
+
+      titleField.value = item.title;
+      descriptionField.value = item.description;
+      priorityField.checked = item.priority;
+
+      currentTitle = item.title;
+
+      form.showModal();
+    });
+
     deleteButton.addEventListener("click", () => {
-      selectedProject.removeItem(item);
+      selectedProject.removeItem(item.title);
       displaySelectedProject();
       saveProjects();
       saveSelectedProject();
     });
 
     buttonDiv.appendChild(expandButton);
+    buttonDiv.appendChild(editButton);
     buttonDiv.appendChild(deleteButton);
     buttonItem.appendChild(buttonDiv);
     itemContainer.appendChild(buttonItem);
